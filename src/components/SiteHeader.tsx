@@ -1,6 +1,7 @@
 import { Search, Phone, ShoppingCart, User, Menu, X, ChevronDown, MapPin, Truck } from "lucide-react";
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import logo from "@/assets/Tire Magician.JPG.jpeg";
 
 const navLinks = [
   {
@@ -22,7 +23,7 @@ const navLinks = [
 
 const PromoBanner = () => (
   <div className="promo-strip text-center py-2 px-4 text-xs sm:text-sm font-semibold tracking-wide">
-    🔥 Free Shipping on All Orders &mdash; Shop Now & Save!
+    🔥 Fast Shipping on All Orders &mdash; Shop Now & Save!
   </div>
 );
 
@@ -60,15 +61,17 @@ const SiteHeader = () => {
 
   return (
     <header className="sticky top-0 z-50">
-      <PromoBanner />
+      {/* <PromoBanner /> */}
       <TopBar />
       <nav className="bg-background border-b border-border shadow-sm">
         <div className="container flex items-center justify-between py-3">
           <Link to="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
-              <span className="text-primary-foreground font-heading font-black text-sm">TM</span>
+            <div className="w-20  rounded-full bg-primary flex items-center justify-center">
+              <span className="text-primary-foreground font-heading font-black ">
+                <img src={logo} alt="icon" className="w-100" />
+                 </span>
             </div>
-            <span className="font-heading text-xl sm:text-2xl font-black tracking-tight uppercase">
+            <span className="font-heading text-xl sm:text-4xl font-black tracking-tight uppercase">
               <span className="text-primary">Tire</span>{" "}
               <span className="text-foreground">Magician</span>
             </span>

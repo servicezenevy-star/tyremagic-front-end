@@ -89,14 +89,15 @@
 @layer components {
   /* Top bar */
   .topbar {
-    background: hsl(var(--topbar));
-    color: hsl(var(--topbar-foreground));
+    background: #0070FF;
+    color: #fff;
   }
 
   /* Hero buttons */
   .btn-hero-primary {
     @apply inline-flex items-center justify-center font-semibold px-8 py-3.5 text-sm uppercase tracking-wide transition-all duration-200;
-    background: hsl(var(--primary));
+    background: #5E8D2B
+;
     color: hsl(var(--primary-foreground));
     border-radius: var(--radius);
   }
@@ -160,7 +161,8 @@
 
   /* Promo gradient */
   .promo-gradient {
-    background: linear-gradient(135deg, hsl(var(--promo-gradient-start)), hsl(var(--promo-gradient-end)));
+    background: #5E8D2B
+;
   }
 
   /* Star rating */
@@ -179,7 +181,7 @@
 
   /* Promo banner strip */
   .promo-strip {
-    background: linear-gradient(90deg, hsl(var(--promo-gradient-start)), hsl(var(--promo-gradient-end)));
+    background: #5E8D2B;
     color: hsl(var(--primary-foreground));
   }
 
@@ -196,7 +198,7 @@
   .link-underline::after {
     content: '';
     @apply absolute w-full h-0.5 bottom-0 left-0 origin-bottom-right transition-transform duration-300;
-    background: hsl(var(--primary));
+    background: #0070FF;
     transform: scaleX(0);
   }
   .link-underline:hover::after {
@@ -221,4 +223,7 @@
     border-color: hsl(var(--primary));
     box-shadow: 0 0 0 3px hsl(var(--primary) / 0.1);
   }
+}
+.text-primary {
+  color: #0070FF !important;
 }
