@@ -4,15 +4,25 @@ import { Tag, ArrowRight, Clock, Percent } from "lucide-react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
+// const deals = [
+//   { id: 1, title: "Buy 4 Bridgestone Dueler LX Tires", subtitle: "Save $80 Instantly", brand: "Bridgestone", discount: "$80 OFF", expires: "Mar 31, 2026", color: "from-red-600 to-red-500" },
+//   { id: 2, title: "Buy 4 Select Falken Tires", subtitle: "Save $80 Instantly", brand: "Falken", discount: "$80 OFF", expires: "Mar 31, 2026", color: "from-blue-600 to-blue-500" },
+//   { id: 3, title: "Buy 4 Select Cooper Tires", subtitle: "Get $70 Back", brand: "Cooper", discount: "$70 REBATE", expires: "Apr 15, 2026", color: "from-amber-600 to-amber-500" },
+//   { id: 4, title: "Pirelli P7 AS Plus 3", subtitle: "Get a $100 Visa Prepaid Card", brand: "Pirelli", discount: "$100 CARD", expires: "Apr 30, 2026", color: "from-yellow-600 to-yellow-500" },
+//   { id: 5, title: "Buy 4 Select Goodyear Tires", subtitle: "Get Up to $80 Back", brand: "Goodyear", discount: "$80 BACK", expires: "Mar 31, 2026", color: "from-green-600 to-green-500" },
+//   { id: 6, title: "Hankook Select Tires", subtitle: "Get up to $100 Prepaid Mastercard", brand: "Hankook", discount: "$100 CARD", expires: "Apr 15, 2026", color: "from-teal-600 to-teal-500" },
+//   { id: 7, title: "Kumho Prepaid Mastercard", subtitle: "Get an $80 Prepaid Mastercard", brand: "Kumho", discount: "$80 CARD", expires: "Mar 31, 2026", color: "from-purple-600 to-purple-500" },
+//   { id: 8, title: "General Tire Prepaid Mastercard", subtitle: "Get up to $80 Back", brand: "General", discount: "$80 BACK", expires: "Apr 30, 2026", color: "from-orange-600 to-orange-500" },
+// ];
 const deals = [
-  { id: 1, title: "Buy 4 Bridgestone Dueler LX Tires", subtitle: "Save $80 Instantly", brand: "Bridgestone", discount: "$80 OFF", expires: "Mar 31, 2026", color: "from-red-600 to-red-500" },
+  { id: 1, title: "Buy 4 Bridgestone Dueler LX Tires", subtitle: "Save $80 Instantly", brand: "Bridgestone", discount: "$80 OFF", expires: "Mar 31, 2026", color: "from-blue-600 to-blue-500" },
   { id: 2, title: "Buy 4 Select Falken Tires", subtitle: "Save $80 Instantly", brand: "Falken", discount: "$80 OFF", expires: "Mar 31, 2026", color: "from-blue-600 to-blue-500" },
-  { id: 3, title: "Buy 4 Select Cooper Tires", subtitle: "Get $70 Back", brand: "Cooper", discount: "$70 REBATE", expires: "Apr 15, 2026", color: "from-amber-600 to-amber-500" },
-  { id: 4, title: "Pirelli P7 AS Plus 3", subtitle: "Get a $100 Visa Prepaid Card", brand: "Pirelli", discount: "$100 CARD", expires: "Apr 30, 2026", color: "from-yellow-600 to-yellow-500" },
-  { id: 5, title: "Buy 4 Select Goodyear Tires", subtitle: "Get Up to $80 Back", brand: "Goodyear", discount: "$80 BACK", expires: "Mar 31, 2026", color: "from-green-600 to-green-500" },
-  { id: 6, title: "Hankook Select Tires", subtitle: "Get up to $100 Prepaid Mastercard", brand: "Hankook", discount: "$100 CARD", expires: "Apr 15, 2026", color: "from-teal-600 to-teal-500" },
-  { id: 7, title: "Kumho Prepaid Mastercard", subtitle: "Get an $80 Prepaid Mastercard", brand: "Kumho", discount: "$80 CARD", expires: "Mar 31, 2026", color: "from-purple-600 to-purple-500" },
-  { id: 8, title: "General Tire Prepaid Mastercard", subtitle: "Get up to $80 Back", brand: "General", discount: "$80 BACK", expires: "Apr 30, 2026", color: "from-orange-600 to-orange-500" },
+  { id: 3, title: "Buy 4 Select Cooper Tires", subtitle: "Get $70 Back", brand: "Cooper", discount: "$70 REBATE", expires: "Apr 15, 2026", color: "from-blue-600 to-blue-500" },
+  { id: 4, title: "Pirelli P7 AS Plus 3", subtitle: "Get a $100 Visa Prepaid Card", brand: "Pirelli", discount: "$100 CARD", expires: "Apr 30, 2026", color: "from-blue-600 to-blue-500" },
+  { id: 5, title: "Buy 4 Select Goodyear Tires", subtitle: "Get Up to $80 Back", brand: "Goodyear", discount: "$80 BACK", expires: "Mar 31, 2026", color: "from-blue-600 to-blue-500" },
+  { id: 6, title: "Hankook Select Tires", subtitle: "Get up to $100 Prepaid Mastercard", brand: "Hankook", discount: "$100 CARD", expires: "Apr 15, 2026", color: "from-blue-600 to-blue-500" },
+  { id: 7, title: "Kumho Prepaid Mastercard", subtitle: "Get an $80 Prepaid Mastercard", brand: "Kumho", discount: "$80 CARD", expires: "Mar 31, 2026", color: "from-blue-600 to-blue-500" },
+  { id: 8, title: "General Tire Prepaid Mastercard", subtitle: "Get up to $80 Back", brand: "General", discount: "$80 BACK", expires: "Apr 30, 2026", color: "from-blue-600 to-blue-500" },
 ];
 
 const DealsPage = () => {

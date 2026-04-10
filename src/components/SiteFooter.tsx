@@ -19,7 +19,7 @@ const SiteFooter = () => {
             <p className="text-sm leading-relaxed opacity-80 max-w-sm">
               Your trusted source for premium tires online. Free shipping, top brands, road hazard protection, and expert customer support.
             </p>
-            <div className="flex gap-3 mt-5">
+            {/* <div className="flex gap-3 mt-5">
               {[Facebook, Twitter, Instagram, Youtube].map((Icon, i) => (
                 <a
                   key={i}
@@ -29,7 +29,7 @@ const SiteFooter = () => {
                   <Icon className="w-4 h-4" />
                 </a>
               ))}
-            </div>
+            </div> */}
           </div>
 
           {/* Shop */}

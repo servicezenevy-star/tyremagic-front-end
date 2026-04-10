@@ -64,7 +64,7 @@ const ContactPage = () => {
                 </div>
               ))}
 
-              <div className="product-card p-5 mt-6">
+              {/* <div className="product-card p-5 mt-6">
                 <div className="flex items-center gap-3 mb-2">
                   <Clock className="w-5 h-5 text-primary" />
                   <h3 className="font-heading text-base font-bold text-foreground uppercase">Business Hours</h3>
@@ -74,7 +74,7 @@ const ContactPage = () => {
                   <div className="flex justify-between"><span className="text-muted-foreground">Saturday</span><span className="font-medium text-foreground">9:00 AM - 5:00 PM ET</span></div>
                   <div className="flex justify-between"><span className="text-muted-foreground">Sunday</span><span className="font-medium text-foreground">Closed</span></div>
                 </div>
-              </div>
+              </div> */}
             </div>
 
             {/* Contact form */}

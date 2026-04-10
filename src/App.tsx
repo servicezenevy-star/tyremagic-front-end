@@ -11,6 +11,7 @@ import ShippingPage from "./pages/ShippingPage.tsx";
 import ContactPage from "./pages/ContactPage.tsx";
 import CartPage from "./pages/CartPage.tsx";
 import NotFound from "./pages/NotFound.tsx";
+import InstallerSignupPage from "./pages/InstallerSignupPage.tsx";
 
 const queryClient = new QueryClient();
 
@@ -26,6 +27,7 @@ const App = () => (
           <Route path="/wheels" element={<WheelsPage />} />
           <Route path="/deals" element={<DealsPage />} />
           <Route path="/shipping" element={<ShippingPage />} />
+          <Route path="/partner" element={<InstallerSignupPage/>} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/cart" element={<CartPage />} />
           <Route path="*" element={<NotFound />} />

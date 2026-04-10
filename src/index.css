@@ -89,14 +89,14 @@
 @layer components {
   /* Top bar */
   .topbar {
-    background: #0070FF;
+    background:  #006EFB;
     color: #fff;
   }
 
   /* Hero buttons */
   .btn-hero-primary {
     @apply inline-flex items-center justify-center font-semibold px-8 py-3.5 text-sm uppercase tracking-wide transition-all duration-200;
-    background: #5E8D2B
+    background: #1E8A46
 ;
     color: hsl(var(--primary-foreground));
     border-radius: var(--radius);
@@ -161,7 +161,7 @@
 
   /* Promo gradient */
   .promo-gradient {
-    background: #5E8D2B
+    background: #1E8A46
 ;
   }
 
@@ -181,7 +181,7 @@
 
   /* Promo banner strip */
   .promo-strip {
-    background: #5E8D2B;
+    background: #1E8A46;
     color: hsl(var(--primary-foreground));
   }
 
@@ -198,7 +198,7 @@
   .link-underline::after {
     content: '';
     @apply absolute w-full h-0.5 bottom-0 left-0 origin-bottom-right transition-transform duration-300;
-    background: #0070FF;
+    background:  #006EFB;
     transform: scaleX(0);
   }
   .link-underline:hover::after {
@@ -225,8 +225,21 @@
   }
 }
 .text-primary {
-  color: #0070FF !important;
+  color:  #006EFB !important;
 }
 .bg-primary {
-  background-color: #5E8D2B !important;
+  background-color: #1E8A46 !important;
+}
+/* border */
+.border-primary {
+    border-color: #1E8A46 !important;
+}
+/* form focus */
+.form-select:focus {
+    border-color: #1E8A46 !important;
+    box-shadow: 0 0 0 3px #1E8A46 / 0.1 !important;
+}
+/* card blue */
+.to-blue-500 {
+    --tw-gradient-to: #006EFB var(--tw-gradient-to-position) !important;
 }
