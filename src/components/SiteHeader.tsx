@@ -18,6 +18,7 @@ const navLinks = [
   { label: "Wheels", href: "/wheels" },
   { label: "Delivery & Installation", href: "/shipping" },
   { label: "Deals", href: "/deals" },
+  { label: "Become a Partner", href: "/partner" },
   { label: "Contact Us", href: "/contact" },
 ];
 
