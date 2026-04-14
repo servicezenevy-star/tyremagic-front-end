@@ -86,7 +86,7 @@ const SiteFooter = () => {
                 <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center flex-shrink-0">
                   <Mail className="w-3.5 h-3.5 text-primary" />
                 </div>
-                <span>support@tiremagician.com</span>
+                <span>contact@tiremagician.com</span>
               </li>
               <li className="flex items-start gap-2.5">
                 <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center flex-shrink-0 mt-0.5">

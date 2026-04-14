@@ -48,7 +48,7 @@ const ContactPage = () => {
               <h2 className="font-heading text-2xl font-black text-foreground uppercase">Get in Touch</h2>
               {[
                 { icon: Phone, label: "Phone", value: "1-800-TIRE-MAG", sub: "Mon-Fri 8am-8pm, Sat 9am-5pm" },
-                { icon: Mail, label: "Email", value: "support@tiremagician.com", sub: "We respond within 24 hours" },
+                { icon: Mail, label: "Email", value: "contact@tiremagician.com", sub: "We respond within 24 hours" },
                 { icon: MessageCircle, label: "Live Chat", value: "Available on site", sub: "Mon-Fri 9am-6pm ET" },
                 { icon: MapPin, label: "Website", value: "www.tiremagician.com", sub: "Shop 24/7 online" },
               ].map((info) => (
