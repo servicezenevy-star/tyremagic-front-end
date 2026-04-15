@@ -18,23 +18,34 @@ const InstallerSignupPage = () => {
     experience: "",
   });
 
+  // 🔥 SCROLL TO INSTALLER FORM
   const scrollToForm = () => {
     const section = document.getElementById("installer-form");
 
     if (section) {
-      const yOffset = -80; // adjust if header height different
+      const yOffset = -80;
       const y =
         section.getBoundingClientRect().top + window.pageYOffset + yOffset;
 
       window.scrollTo({ top: y, behavior: "smooth" });
 
-      // trigger glow animation
       setTimeout(() => {
         setHighlightForm(true);
-
-        // remove highlight after 2 sec
         setTimeout(() => setHighlightForm(false), 2000);
       }, 500);
+    }
+  };
+
+  // 🔥 SCROLL TO AFFILIATE FORM
+  const scrollToAffiliate = () => {
+    const section = document.getElementById("affiliate-form");
+
+    if (section) {
+      const yOffset = -80;
+      const y =
+        section.getBoundingClientRect().top + window.pageYOffset + yOffset;
+
+      window.scrollTo({ top: y, behavior: "smooth" });
     }
   };
 
@@ -66,76 +77,53 @@ const InstallerSignupPage = () => {
         <section className="section-dark py-16">
           <div className="container text-center max-w-4xl">
             <h1 className="font-heading text-4xl md:text-6xl font-black uppercase text-primary-foreground">
-              Become a <span className="text-primary">Mobile Tire Installer</span>
+              Become a <span className="text-primary">Partner</span>
             </h1>
             <p className="text-primary-foreground/70 mt-4 text-lg">
-              Join Tire Magician and grow your business with high-quality leads, flexible work, and fast payouts.
+              Join as a Mobile Installer or Affiliate Partner and grow with Tire Magician 🚀
             </p>
 
-            <button onClick={scrollToForm} className="btn-hero-primary mt-6">
-              Apply Now
-            </button>
+            <div className="flex gap-4 justify-center mt-6 flex-wrap">
+              <button onClick={scrollToForm} className="btn-hero-primary">
+                Installer Signup
+              </button>
+              <button onClick={scrollToAffiliate} className="btn-hero-primary">
+                Affiliate Signup
+              </button>
+            </div>
           </div>
         </section>
 
-        {/* BENEFITS */}
+        {/* INSTALLER SECTION */}
         <section className="py-14">
           <div className="container grid md:grid-cols-3 gap-6">
             {[
               {
                 icon: DollarSign,
                 title: "Earn More",
-                desc: "Get consistent, high-paying installation jobs in your area.",
+                desc: "Get consistent, high-paying jobs.",
               },
               {
                 icon: Truck,
                 title: "Flexible Work",
-                desc: "Work when you want. Accept jobs that fit your schedule.",
+                desc: "Work on your own schedule.",
               },
               {
                 icon: Wrench,
-                title: "Grow Your Business",
-                desc: "Access new customers without spending on ads.",
+                title: "Grow Business",
+                desc: "We bring customers to you.",
               },
             ].map((item, i) => (
               <div key={i} className="product-card p-6 text-center">
                 <item.icon className="w-8 h-8 text-primary mx-auto mb-3" />
-                <h3 className="font-heading text-lg font-bold uppercase text-foreground">
-                  {item.title}
-                </h3>
-                <p className="text-sm text-muted-foreground mt-2">
-                  {item.desc}
-                </p>
+                <h3 className="font-bold">{item.title}</h3>
+                <p className="text-sm text-muted-foreground mt-2">{item.desc}</p>
               </div>
             ))}
           </div>
         </section>
 
-        {/* HOW IT WORKS */}
-        <section className="section-alt py-14">
-          <div className="container text-center max-w-5xl">
-            <h2 className="font-heading text-3xl font-black uppercase mb-10">
-              How It <span className="text-primary">Works</span>
-            </h2>
-
-            <div className="grid md:grid-cols-3 gap-6">
-              {[
-                "Apply & Get Approved",
-                "Receive Job Requests",
-                "Install & Get Paid",
-              ].map((step, i) => (
-                <div key={i} className="product-card p-6">
-                  <div className="text-primary text-2xl font-black mb-2">
-                    {i + 1}
-                  </div>
-                  <p className="font-semibold text-foreground">{step}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* FORM */}
+        {/* INSTALLER FORM */}
         <section id="installer-form" className="py-16">
           <div className="container max-w-3xl">
             <div
@@ -146,73 +134,24 @@ const InstallerSignupPage = () => {
               }`}
             >
               <h2 className="font-heading text-2xl font-black uppercase mb-6 text-center">
-                Apply to Join Our Network
+                Installer Signup
               </h2>
 
               <form onSubmit={handleSubmit} className="space-y-4">
+                <input placeholder="Full Name" required className="form-select" />
+                <input placeholder="Business Name" className="form-select" />
+                <input placeholder="Email" required className="form-select" />
+                <input placeholder="Phone" required className="form-select" />
+                <input placeholder="City" className="form-select" />
 
-                <div className="grid md:grid-cols-2 gap-4">
-                  <input
-                    type="text"
-                    required
-                    placeholder="Full Name"
-                    className="form-select"
-                    value={formData.name}
-                    onChange={(e) => setFormData({...formData, name: e.target.value})}
-                  />
-
-                  <input
-                    type="text"
-                    placeholder="Business Name"
-                    className="form-select"
-                    value={formData.business}
-                    onChange={(e) => setFormData({...formData, business: e.target.value})}
-                  />
-                </div>
-
-                <div className="grid md:grid-cols-2 gap-4">
-                  <input
-                    type="email"
-                    required
-                    placeholder="Email"
-                    className="form-select"
-                    value={formData.email}
-                    onChange={(e) => setFormData({...formData, email: e.target.value})}
-                  />
-
-                  <input
-                    type="tel"
-                    required
-                    placeholder="Phone Number"
-                    className="form-select"
-                    value={formData.phone}
-                    onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                  />
-                </div>
-
-                <input
-                  type="text"
-                  placeholder="City / Service Area"
-                  className="form-select"
-                  value={formData.city}
-                  onChange={(e) => setFormData({...formData, city: e.target.value})}
-                />
-
-                <select
-                  className="form-select"
-                  required
-                  value={formData.experience}
-                  onChange={(e) => setFormData({...formData, experience: e.target.value})}
-                >
-                  <option value="">Years of Experience</option>
-                  <option value="1">0-1 Years</option>
-                  <option value="3">1-3 Years</option>
-                  <option value="5">3-5 Years</option>
-                  <option value="10">5+ Years</option>
+                <select className="form-select">
+                  <option>Experience</option>
+                  <option>0-1 Years</option>
+                  <option>1-3 Years</option>
+                  <option>3-5 Years</option>
                 </select>
 
-                <button type="submit" className="btn-hero-primary w-full flex items-center justify-center gap-2">
-                  <Send className="w-4 h-4" />
+                <button className="btn-hero-primary w-full">
                   Submit Application
                 </button>
               </form>
@@ -220,15 +159,84 @@ const InstallerSignupPage = () => {
           </div>
         </section>
 
-        {/* TRUST SECTION */}
+        {/* AFFILIATE SECTION */}
+        <section className="section-alt py-16">
+          <div className="container text-center max-w-4xl">
+            <h2 className="font-heading text-3xl font-black uppercase">
+              Affiliate <span className="text-primary">Program</span>
+            </h2>
+
+            <p className="mt-4 text-muted-foreground">
+              Earn up to <span className="text-primary font-bold">10% commission</span> per sale 💰
+            </p>
+
+            <div className="grid md:grid-cols-3 gap-6 mt-10">
+              {[
+                "Earn Commission",
+                "No Inventory Needed",
+                "Passive Income",
+              ].map((item, i) => (
+                <div key={i} className="product-card p-6">
+                  <p className="font-bold">{item}</p>
+                </div>
+              ))}
+            </div>
+
+            <button
+              onClick={scrollToAffiliate}
+              className="btn-hero-primary mt-8"
+            >
+              Join Affiliate Program
+            </button>
+          </div>
+        </section>
+
+        {/* AFFILIATE FORM */}
+        <section id="affiliate-form" className="py-16">
+          <div className="container max-w-3xl">
+            <div className="glass-card p-8">
+              <h2 className="font-heading text-2xl font-black uppercase mb-6 text-center">
+                Affiliate Signup
+              </h2>
+
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  toast({
+                    title: "Affiliate Request Sent 🚀",
+                    description: "We’ll send your link soon.",
+                  });
+                }}
+                className="space-y-4"
+              >
+                <input placeholder="Full Name" required className="form-select" />
+                <input placeholder="Email" required className="form-select" />
+                <input placeholder="Website / Instagram" className="form-select" />
+
+                <select className="form-select">
+                  <option>Audience Size</option>
+                  <option>0-1K</option>
+                  <option>1K-10K</option>
+                  <option>10K+</option>
+                </select>
+
+                <button className="btn-hero-primary w-full">
+                  Request Affiliate Link
+                </button>
+              </form>
+            </div>
+          </div>
+        </section>
+
+        {/* TRUST */}
         <section className="section-dark py-14 text-center">
           <div className="container grid md:grid-cols-3 gap-6">
             {[
-              "500+ Installers",
-              "10K+ Jobs Completed",
-              "Fast Weekly Payments",
+              "500+ Partners",
+              "10K+ Orders",
+              "Fast Payments",
             ].map((item, i) => (
-              <div key={i} className="text-primary font-bold text-lg">
+              <div key={i} className="text-primary font-bold">
                 <CheckCircle className="mx-auto mb-2" />
                 {item}
               </div>
