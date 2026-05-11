@@ -61,12 +61,12 @@ const ShippingPage = () => {
                 </h2>
                 <p className="text-muted-foreground mt-3 leading-relaxed">
                   Every order ships free. No minimums, no gimmicks. Your tires will be delivered directly to your door or
-                  to your preferred installer — usually within 1-3 business days.
+                  to your preferred installer — usually within 3-5 business days.
                 </p>
                 <ul className="mt-6 space-y-3">
                   {[
                     { icon: Truck, text: "Free ground shipping on all orders" },
-                    { icon: Clock, text: "1-3 business day delivery in most areas" },
+                    { icon: Clock, text: "3-5 business day delivery in most areas" },
                     { icon: MapPin, text: "Ship to home or directly to your installer" },
                     { icon: Package, text: "Fully insured and trackable shipments" },
                   ].map((item) => (
@@ -84,7 +84,11 @@ const ShippingPage = () => {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
               >
-                <img src={deliveryIcon} alt="Tire delivery" className="w-full max-w-sm mx-auto" />
+                <img
+                  src={deliveryIcon}
+                  alt="Tire installation services and fast delivery - buy tires online"
+                  className="w-full max-w-sm mx-auto"
+                />
               </motion.div>
             </div>
           </div>

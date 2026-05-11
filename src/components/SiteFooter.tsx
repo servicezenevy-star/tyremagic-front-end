@@ -17,7 +17,8 @@ const SiteFooter = () => {
               </span>
             </Link>
             <p className="text-sm leading-relaxed opacity-80 max-w-sm">
-              Your trusted source for premium tires online. Free shipping, top brands, road hazard protection, and expert customer support.
+              Your trusted source for premium tires online. Free shipping, top brands, manufacturer tread wear warranty, and expert customer support.
+
             </p>
             {/* <div className="flex gap-3 mt-5">
               {[Facebook, Twitter, Instagram, Youtube].map((Icon, i) => (

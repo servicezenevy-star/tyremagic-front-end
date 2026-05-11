@@ -36,7 +36,7 @@ const TireDecisionGuide = () => {
           >
             <img
               src={tireGuide}
-              alt="Five different tire types for every season"
+              alt="Tire shop online guide - buy tires online by season and vehicle"
               className="rounded-2xl shadow-2xl w-full h-[300px] md:h-[380px] object-cover"
             />
             <div className="absolute -bottom-4 -left-4 bg-primary text-primary-foreground p-4 rounded-xl shadow-lg">

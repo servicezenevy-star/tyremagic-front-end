@@ -40,7 +40,11 @@ const WheelsPage = () => {
                 className="product-card group"
               >
                 <div className="relative p-6 pb-2 bg-secondary/30 flex items-center justify-center">
-                  <img src={wheelIcon} alt={wheel.name} className="w-32 h-32 object-contain group-hover:scale-110 transition-transform duration-300" />
+                  <img
+                    src={wheelIcon}
+                    alt={`Tire shop online - wheels product ${wheel.brand} ${wheel.name}`}
+                    className="w-32 h-32 object-contain group-hover:scale-110 transition-transform duration-300"
+                  />
                   {wheel.badge && (
                     <span className="absolute top-3 left-3 badge-sale">{wheel.badge}</span>
                   )}

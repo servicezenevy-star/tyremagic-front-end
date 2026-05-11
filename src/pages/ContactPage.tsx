@@ -6,8 +6,8 @@ import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 
 const faqs = [
-  { q: "How long does shipping take?", a: "Most orders arrive within 1-3 business days. We offer free ground shipping on all tire orders." },
-  { q: "Do you offer road hazard protection?", a: "Yes! Free two-year Road Hazard Protection is included with most tire purchases." },
+  { q: "How long does shipping take?", a: "Most orders arrive within 3-5 business days. We offer free ground shipping on all tire orders." },
+  { q: "Do you offer manufacturer tread wear warranty?", a: "Yes! Free two-year Manufacturer Tread Wear Warranty is included with most tire purchases." },
   { q: "Can I return tires?", a: "Unused tires can be returned within 30 days of purchase. Contact us for return authorization." },
   { q: "How do I find the right tire size?", a: "Check the sidewall of your current tires or the sticker inside your driver's door jamb. You can also search by vehicle on our site." },
   { q: "Do you ship internationally?", a: "Currently, we ship within the United States and Canada. Contact us for special shipping requests." },

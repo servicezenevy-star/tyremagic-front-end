@@ -12,7 +12,7 @@ const categories = [
   { label: "Deals & Offers", icon: Tag, href: "/deals" },
   { label: "Installation", icon: Wrench, href: "/shipping" },
   { label: "Free Shipping", icon: Truck, href: "/shipping" },
-  { label: "Road Hazard", icon: Shield, href: "/tires" },
+  { label: "Manufacturer Tread Wear Warranty", icon: Shield, href: "/tires" },
   { label: "Tire Lottery", icon: Ticket, href: "/deals" },
 ];
 
@@ -30,7 +30,15 @@ const CategoryBar = () => {
             >
               <Link to={cat.href} className="category-card w-20 sm:w-24 md:w-28">
                 {cat.image ? (
-                  <img src={cat.image} alt={cat.label} className="w-12 h-12 sm:w-14 sm:h-14 object-contain" />
+                  <img
+                    src={cat.image}
+                    alt={
+                      cat.href === "/deals"
+                        ? "Tire deals - discount tires online"
+                        : `Buy tires online - ${cat.label}`
+                    }
+                    className="w-12 h-12 sm:w-14 sm:h-14 object-contain"
+                  />
                 ) : cat.icon ? (
                   <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-secondary flex items-center justify-center">
                     <cat.icon className="w-6 h-6 text-foreground" />

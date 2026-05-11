@@ -19,7 +19,7 @@ const reviews = [
   {
     name: "James L.",
     rating: 5,
-    text: "Best tire buying experience I've ever had. Prices beat my local shop and the road hazard protection gives me peace of mind.",
+    text: "Best tire buying experience I've ever had. Prices beat my local shop and the manufacturer tread wear warranty gives me peace of mind.",
     tire: "Continental ExtremeContact",
     date: "3 weeks ago",
   },

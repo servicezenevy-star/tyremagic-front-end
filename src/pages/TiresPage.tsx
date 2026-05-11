@@ -163,7 +163,11 @@ const TiresPage = () => {
                     className="product-card group"
                   >
                     <div className="relative p-6 pb-2 bg-secondary/30 flex items-center justify-center">
-                      <img src={tireIcon} alt={tire.name} className="w-32 h-32 object-contain group-hover:scale-110 transition-transform duration-300" />
+                      <img
+                        src={tireIcon}
+                        alt={`Buy tires online - ${tire.brand} ${tire.name} (${tire.type})`}
+                        className="w-32 h-32 object-contain group-hover:scale-110 transition-transform duration-300"
+                      />
                       {tire.badge && (
                         <span className={`absolute top-3 left-3 ${tire.badge === "Sale" ? "badge-sale" : tire.badge === "Top Rated" ? "badge-new" : "badge-sale"}`}>
                           {tire.badge}

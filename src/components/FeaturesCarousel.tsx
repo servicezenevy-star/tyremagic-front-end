@@ -8,8 +8,8 @@ const features = [
   {
     image: roadHazard,
     badge: "Included Free",
-    title: "Road Hazard Protection",
-    description: "It's almost always pothole season. Our free two-year Road Hazard Protection is included with most tires. Rest easy — we've got you covered.",
+    title: "Manufacturer Tread Wear Warranty",
+    description: "It's almost always pothole season. Our free two-year Manufacturer Tread Wear Warranty is included with most tires. Rest easy — we've got you covered.",
     icon: Shield,
     cta: "Learn More",
     href: "/tires",
@@ -56,7 +56,11 @@ const FeaturesCarousel = () => {
               <div className="relative h-52 overflow-hidden">
                 <img
                   src={feature.image}
-                  alt={feature.title}
+                  alt={
+                    feature.title === "Manufacturer Tread Wear Warranty"
+                      ? "Discount tires online - manufacturer tread wear warranty when you buy tires online"
+                      : "Tire installation services - find an installer when you buy tires online"
+                  }
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
                 <div className="absolute top-3 left-3 badge-sale">{feature.badge}</div>

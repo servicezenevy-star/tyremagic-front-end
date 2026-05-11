@@ -8,7 +8,7 @@ const HeroBanner = () => {
     <section className="relative h-[480px] md:h-[560px] overflow-hidden">
       <img
         src={heroImage}
-        alt="Tire warehouse with rows of premium tires"
+        alt="Online tire retailer hero - buy tires online from a tire shop online with fast delivery"
         className="absolute inset-0 w-full h-full object-cover"
         loading="eager"
       />
@@ -45,7 +45,7 @@ const HeroBanner = () => {
           <div className="flex flex-wrap gap-6 mt-8">
             {[
               { icon: Truck, text: "Free Shipping" },
-              { icon: Shield, text: "Road Hazard Protection" },
+              { icon: Shield, text: "Manufacturer Tread Wear Warranty" },
               { icon: Star, text: "5,000+ Reviews" },
             ].map((badge) => (
               <div key={badge.text} className="flex items-center gap-2 text-primary-foreground/60 text-xs sm:text-sm">

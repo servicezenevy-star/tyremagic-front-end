@@ -64,7 +64,11 @@ const CartPage = () => {
                 {cartItems.map((item) => (
                   <div key={item.id} className="product-card p-4 flex gap-4">
                     <div className="w-24 h-24 bg-secondary/30 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <img src={tireIcon} alt={item.name} className="w-16 h-16 object-contain" />
+                      <img
+                        src={tireIcon}
+                        alt={`Discount tires online in your cart - ${item.brand} ${item.name}`}
+                        className="w-16 h-16 object-contain"
+                      />
                     </div>
                     <div className="flex-1">
                       <div className="flex items-start justify-between">
@@ -119,7 +123,7 @@ const CartPage = () => {
                   <div className="mt-5 space-y-2">
                     {[
                       { icon: Truck, text: "Free Shipping" },
-                      { icon: Shield, text: "Road Hazard Protection Included" },
+                      { icon: Shield, text: "Manufacturer Tread Wear Warranty Included" },
                     ].map((perk) => (
                       <div key={perk.text} className="flex items-center gap-2 text-xs text-muted-foreground">
                         <perk.icon className="w-4 h-4 text-success" />
