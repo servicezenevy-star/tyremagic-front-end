@@ -32,28 +32,27 @@ const navLinks = [
     children: [
       {
         label: "Shipping & Delivery",
-        href: "/faq/shipping-delivery",
+        href: "/faq-shipping-delivery",
       },
       {
         label: "Tread Wear Warranty",
-        href: "/faq/tread-wear-warranty",
+        href: "/faq-tread-wear-warranty",
       },
       {
         label: "Online Tire Orders",
-        href: "/faq/online-tire-orders",
+        href: "/faq-online-tire-orders",
       },
       {
         label: "Tire Installation",
-        href: "/faq/tire-installation",
+        href: "/faq-tire-installation",
       },
       {
         label: "Returns & Refunds",
-        href: "/faq/returns-refunds",
+        href: "/faq-returns-refunds",
       },
     ],
   },
 
-  { label: "Deals", href: "/deals" },
   { label: "Contact Us", href: "/contact" },
   { label: "Become a Partner", href: "/partner" },
 ];
@@ -73,7 +72,7 @@ const TopBar = () => (
 
         <span className="hidden md:flex items-center gap-1.5">
           <MapPin className="w-3.5 h-3.5" />
-          Atlanta Mobile Installation Available
+           Mobile Installation Available
         </span>
       </div>
 
@@ -133,10 +132,10 @@ const SiteHeader = () => {
             </div>
 
             <span className="font-heading text-xl sm:text-4xl font-black tracking-tight uppercase">
-              <span className="text-primary">Tire</span>{" "}
+              {/* <span className="text-primary">Tire</span>{" "}
               <span className="text-foreground">
                 Magician
-              </span>
+              </span> */}
             </span>
           </Link>
 
@@ -157,10 +156,10 @@ const SiteHeader = () => {
                   to={link.href}
                   className={`flex items-center gap-1 px-3 py-2 text-sm font-medium rounded-md transition-colors ${
                     location.pathname === link.href
-                      ? "text-primary bg-primary/5"
+                      ? "text-primary "
                       : link.label === "Become a Partner"
-                      ? "bg-primary text-primary-foreground hover:bg-primary/90"
-                      : "text-foreground hover:text-primary hover:bg-primary/5"
+                      ? " text-primary-foreground hover:text-primary hover:bg-primary/5 transition-colors"
+                      : "text-foreground hover:text-primary hover:text-primary hover:bg-primary/5 transition-colors"
                   }`}
                 >
                   {link.label}

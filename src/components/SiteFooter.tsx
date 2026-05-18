@@ -1,5 +1,7 @@
 import { Phone, Mail, MapPin, Facebook, Twitter, Instagram, Youtube, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import logo from "@/assets/Tire Magician.JPG.jpeg";
+
 
 const SiteFooter = () => {
   return (
@@ -8,14 +10,15 @@ const SiteFooter = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 mb-10">
           {/* Brand */}
           <div className="lg:col-span-2">
-            <Link to="/" className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
-                <span className="text-primary-foreground font-heading font-black text-sm">TM</span>
-              </div>
-              <span className="font-heading text-xl font-black tracking-tight uppercase footer-heading">
-                Tire Magician
+            <div className="w-20 rounded-full bg-primary flex items-center justify-center">
+              <span className="text-primary-foreground font-heading font-black">
+                <img
+                  src={logo}
+                  alt="Online Tire Retailer Logo"
+                  className="w-100"
+                />
               </span>
-            </Link>
+            </div>
             <p className="text-sm leading-relaxed opacity-80 max-w-sm">
               Your trusted source for premium tires online. Free shipping, top brands, manufacturer tread wear warranty, and expert customer support.
 
