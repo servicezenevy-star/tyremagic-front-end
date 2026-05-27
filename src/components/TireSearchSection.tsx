@@ -1,57 +1,304 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { Search } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "@/components/ui/sonner";
+import { fitMent } from "@/config/axiosUtils";
 
-const widths = ["155","165","175","185","195","205","215","225","235","245","255","265","275","285","295","305","315"];
-const profiles = ["25","30","35","40","45","50","55","60","65","70","75","80"];
-const wheelSizes = ["13","14","15","16","17","18","19","20","21","22","24","26"];
-const seasons = ["All Season","Summer","Winter","All Weather","All Terrain"];
-const brands = ["Michelin","Bridgestone","Goodyear","Continental","Pirelli"];
+const widths = [
+  "155",
+  "165",
+  "175",
+  "185",
+  "195",
+  "205",
+  "215",
+  "225",
+  "235",
+  "245",
+  "255",
+  "265",
+  "275",
+  "285",
+  "295",
+  "305",
+  "315",
+];
+const profiles = [
+  "25",
+  "30",
+  "35",
+  "40",
+  "45",
+  "50",
+  "55",
+  "60",
+  "65",
+  "70",
+  "75",
+  "80",
+];
+const wheelSizes = [
+  "13",
+  "14",
+  "15",
+  "16",
+  "17",
+  "18",
+  "19",
+  "20",
+  "21",
+  "22",
+  "24",
+  "26",
+];
+const seasons = [
+  "All Season",
+  "Summer",
+  "Winter",
+  "All Weather",
+  "All Terrain",
+];
+const brands = [
+  "Michelin",
+  "Bridgestone",
+  "Goodyear",
+  "Continental",
+  "Pirelli",
+];
+
+type FiltersState = {
+  width: string;
+  profile: string;
+  wheel: string;
+  season: string;
+  brand: string;
+  year: string;
+  make: string;
+  model: string;
+  trim: string;
+};
+
+type FitmentResponseKey = "years" | "makes" | "models" | "trims";
+
+type FitmentResponse =
+  | Partial<Record<FitmentResponseKey, unknown>>
+  | {
+      items?: unknown;
+      data?: unknown;
+      results?: unknown;
+    }
+  | unknown[];
+
+const INITIAL_FILTERS: FiltersState = {
+  width: "",
+  profile: "",
+  wheel: "",
+  season: "",
+  brand: "",
+  year: "",
+  make: "",
+  model: "",
+  trim: "",
+};
+
+const getSelectPlaceholder = ({
+  label,
+  isLoading,
+  hasParentValue,
+  hasOptions,
+  emptyLabel,
+}: {
+  label: string;
+  isLoading: boolean;
+  hasParentValue: boolean;
+  hasOptions: boolean;
+  emptyLabel: string;
+}) => {
+  if (!hasParentValue) {
+    return label;
+  }
+
+  if (isLoading) {
+    return `Loading ${label.toLowerCase()}...`;
+  }
+
+  if (!hasOptions) {
+    return emptyLabel;
+  }
+
+  return label;
+};
+
+const normalizeFitmentOptions = (
+  payload: FitmentResponse | undefined,
+  key: FitmentResponseKey,
+) => {
+  const candidate = Array.isArray(payload)
+    ? payload
+    : (payload?.[key] ?? payload?.items ?? payload?.data ?? payload?.results);
+
+  if (!Array.isArray(candidate)) {
+    return [];
+  }
+
+  return candidate
+    .map((item) => {
+      if (typeof item === "string") {
+        return item.trim();
+      }
+
+      if (item && typeof item === "object") {
+        const record = item as Record<string, unknown>;
+        const value =
+          record.name ??
+          record.label ??
+          record.value ??
+          record[key.slice(0, -1)];
+
+        return typeof value === "string" ? value.trim() : "";
+      }
+
+      return "";
+    })
+    .filter(Boolean);
+};
 
 const TireSearchSection = () => {
   const [searchType, setSearchType] = useState<"size" | "vehicle">("size");
+  const [filters, setFilters] = useState(INITIAL_FILTERS);
   const navigate = useNavigate();
 
-  // 🔥 FULL FILTER STATE
-  const [filters, setFilters] = useState({
-    width: "",
-    profile: "",
-    wheel: "",
-    season: "",
-    brand: "",
-    year: "",
-    make: "",
-    model: "",
-    trim: "",
+  const yearsQuery = useQuery({
+    queryKey: ["fitment", "years"],
+    queryFn: fitMent.getYears,
+    staleTime: 1000 * 60 * 60 * 12,
+    retry: 1,
   });
 
-  const tabs = [
-    { id: "size" as const, label: "Shop by Tire Size" },
-    { id: "vehicle" as const, label: "Shop by Vehicle" },
-  ];
+  const makesQuery = useQuery({
+    queryKey: ["fitment", "makes", filters.year],
+    queryFn: () => fitMent.getMakes(filters.year),
+    enabled: Boolean(filters.year),
+    staleTime: 1000 * 60 * 30,
+    retry: 1,
+  });
 
-  // 🔥 BUILD SIZE STRING
+  const modelsQuery = useQuery({
+    queryKey: ["fitment", "models", filters.year, filters.make],
+    queryFn: () => fitMent.getModel(filters.year, filters.make),
+    enabled: Boolean(filters.year && filters.make),
+    staleTime: 1000 * 60 * 30,
+    retry: 1,
+  });
+
+  const trimsQuery = useQuery({
+    queryKey: ["fitment", "trims", filters.year, filters.make, filters.model],
+    queryFn: () => fitMent.getTrim(filters.year, filters.make, filters.model),
+    enabled: Boolean(filters.year && filters.make && filters.model),
+    staleTime: 1000 * 60 * 30,
+    retry: 1,
+  });
+
+  useEffect(() => {
+    if (yearsQuery.error) {
+      toast.error("Unable to load vehicle years right now.");
+    }
+  }, [yearsQuery.error]);
+
+  useEffect(() => {
+    if (makesQuery.error) {
+      toast.error("Unable to load makes for the selected year.");
+    }
+  }, [makesQuery.error]);
+
+  useEffect(() => {
+    if (modelsQuery.error) {
+      toast.error("Unable to load models for the selected vehicle.");
+    }
+  }, [modelsQuery.error]);
+
+  useEffect(() => {
+    if (trimsQuery.error) {
+      toast.error("Unable to load trims for the selected model.");
+    }
+  }, [trimsQuery.error]);
+
   const sizePreview =
     filters.width && filters.profile && filters.wheel
       ? `${filters.width}/${filters.profile}R${filters.wheel}`
       : "";
 
+  const years = normalizeFitmentOptions(yearsQuery.data, "years");
+  const makes = normalizeFitmentOptions(makesQuery.data, "makes");
+  const models = normalizeFitmentOptions(modelsQuery.data, "models");
+  const trims = normalizeFitmentOptions(trimsQuery.data, "trims");
+
+  const vehicleNote = (() => {
+    if (filters.year && !makesQuery.isLoading && makes.length === 0) {
+      return `No makes found for ${filters.year}.`;
+    }
+
+    if (
+      filters.year &&
+      filters.make &&
+      !modelsQuery.isLoading &&
+      models.length === 0
+    ) {
+      return `No models found for ${filters.year} ${filters.make}.`;
+    }
+
+    if (
+      filters.year &&
+      filters.make &&
+      filters.model &&
+      !trimsQuery.isLoading &&
+      trims.length === 0
+    ) {
+      return `No trims found for ${filters.year} ${filters.make} ${filters.model}.`;
+    }
+
+    return "";
+  })();
+
+  const updateFilters = (next: Partial<FiltersState>) => {
+    setFilters((current) => ({ ...current, ...next }));
+  };
+
   const handleSearch = () => {
     if (searchType === "size") {
       if (!sizePreview) {
-        alert("Please select complete tire size");
+        toast.error("Please select a complete tire size.");
         return;
       }
 
       navigate(
         `/tires?size=${sizePreview}${
-          filters.brand ? `&brand=${filters.brand}` : ""
-        }${filters.season ? `&season=${filters.season}` : ""}`
+          filters.brand ? `&brand=${encodeURIComponent(filters.brand)}` : ""
+        }${filters.season ? `&season=${encodeURIComponent(filters.season)}` : ""}`,
       );
-    } else {
-      navigate("/tires");
+      return;
     }
+
+    if (!filters.year || !filters.make || !filters.model || !filters.trim) {
+      toast.error("Please select year, make, model, and trim.");
+      return;
+    }
+
+    const vehicleParams = new URLSearchParams({
+      year: filters.year,
+      make: filters.make,
+      model: filters.model,
+      trim: filters.trim,
+    });
+
+    navigate(`/tires?${vehicleParams.toString()}`);
   };
+
+  const tabs = [
+    { id: "size" as const, label: "Shop by Tire Size" },
+    { id: "vehicle" as const, label: "Shop by Vehicle" },
+  ];
 
   return (
     <section className="py-16 md:py-24">
@@ -61,8 +308,6 @@ const TireSearchSection = () => {
         </h2>
 
         <div className="glass-card p-6 md:p-8 shadow-xl">
-
-          {/* Tabs */}
           <div className="flex border-b mb-6">
             {tabs.map((tab) => (
               <button
@@ -79,48 +324,75 @@ const TireSearchSection = () => {
             ))}
           </div>
 
-          {/* SIZE SEARCH */}
           {searchType === "size" && (
             <>
               <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
-
-                <select className="form-select"
+                <select
+                  className="form-select"
                   value={filters.width}
-                  onChange={(e)=>setFilters({...filters,width:e.target.value})}>
+                  onChange={(e) => updateFilters({ width: e.target.value })}
+                >
                   <option value="">Width</option>
-                  {widths.map((w)=> <option key={w}>{w}</option>)}
+                  {widths.map((width) => (
+                    <option key={width} value={width}>
+                      {width}
+                    </option>
+                  ))}
                 </select>
 
-                <select className="form-select"
+                <select
+                  className="form-select"
                   value={filters.profile}
-                  onChange={(e)=>setFilters({...filters,profile:e.target.value})}>
+                  onChange={(e) => updateFilters({ profile: e.target.value })}
+                >
                   <option value="">Profile</option>
-                  {profiles.map((p)=> <option key={p}>{p}</option>)}
+                  {profiles.map((profile) => (
+                    <option key={profile} value={profile}>
+                      {profile}
+                    </option>
+                  ))}
                 </select>
 
-                <select className="form-select"
+                <select
+                  className="form-select"
                   value={filters.wheel}
-                  onChange={(e)=>setFilters({...filters,wheel:e.target.value})}>
+                  onChange={(e) => updateFilters({ wheel: e.target.value })}
+                >
                   <option value="">Wheel</option>
-                  {wheelSizes.map((s)=> <option key={s}>{s}</option>)}
+                  {wheelSizes.map((wheelSize) => (
+                    <option key={wheelSize} value={wheelSize}>
+                      {wheelSize}
+                    </option>
+                  ))}
                 </select>
 
-                <select className="form-select"
+                <select
+                  className="form-select"
                   value={filters.brand}
-                  onChange={(e)=>setFilters({...filters,brand:e.target.value})}>
+                  onChange={(e) => updateFilters({ brand: e.target.value })}
+                >
                   <option value="">Brand</option>
-                  {brands.map((b)=> <option key={b}>{b}</option>)}
+                  {brands.map((brand) => (
+                    <option key={brand} value={brand}>
+                      {brand}
+                    </option>
+                  ))}
                 </select>
 
-                <select className="form-select"
+                <select
+                  className="form-select"
                   value={filters.season}
-                  onChange={(e)=>setFilters({...filters,season:e.target.value})}>
+                  onChange={(e) => updateFilters({ season: e.target.value })}
+                >
                   <option value="">Season</option>
-                  {seasons.map((s)=> <option key={s}>{s}</option>)}
+                  {seasons.map((season) => (
+                    <option key={season} value={season}>
+                      {season}
+                    </option>
+                  ))}
                 </select>
               </div>
 
-              {/* 🔥 SIZE PREVIEW */}
               {sizePreview && (
                 <div className="mt-4 text-center">
                   <span className="text-sm text-muted-foreground">
@@ -134,40 +406,135 @@ const TireSearchSection = () => {
             </>
           )}
 
-          {/* VEHICLE SEARCH */}
           {searchType === "vehicle" && (
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <>
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                <select
+                  className="form-select"
+                  value={filters.year}
+                  disabled={yearsQuery.isLoading || years.length === 0}
+                  onChange={(e) =>
+                    updateFilters({
+                      year: e.target.value,
+                      make: "",
+                      model: "",
+                      trim: "",
+                    })
+                  }
+                >
+                  <option value="">
+                    {yearsQuery.isLoading
+                      ? "Loading years..."
+                      : years.length === 0
+                        ? "No years available"
+                        : "Year"}
+                  </option>
+                  {years.map((year) => (
+                    <option key={year} value={year}>
+                      {year}
+                    </option>
+                  ))}
+                </select>
 
-              <select className="form-select"
-                value={filters.year}
-                onChange={(e)=>setFilters({...filters,year:e.target.value})}>
-                <option value="">Year</option>
-                {Array.from({ length: 30 }, (_, i) => 2026 - i).map((y) => (
-                  <option key={y}>{y}</option>
-                ))}
-              </select>
+                <select
+                  className="form-select"
+                  value={filters.make}
+                  disabled={
+                    !filters.year || makesQuery.isLoading || makes.length === 0
+                  }
+                  onChange={(e) =>
+                    updateFilters({
+                      make: e.target.value,
+                      model: "",
+                      trim: "",
+                    })
+                  }
+                >
+                  <option value="">
+                    {getSelectPlaceholder({
+                      label: "Make",
+                      isLoading: makesQuery.isLoading,
+                      hasParentValue: Boolean(filters.year),
+                      hasOptions: makes.length > 0,
+                      emptyLabel: "No makes available",
+                    })}
+                  </option>
+                  {makes.map((make) => (
+                    <option key={make} value={make}>
+                      {make}
+                    </option>
+                  ))}
+                </select>
 
-              <select className="form-select"
-                value={filters.make}
-                onChange={(e)=>setFilters({...filters,make:e.target.value})}>
-                <option value="">Make</option>
-                <option>Honda</option>
-                <option>Toyota</option>
-                <option>Ford</option>
-              </select>
+                <select
+                  className="form-select"
+                  value={filters.model}
+                  disabled={
+                    !filters.year ||
+                    !filters.make ||
+                    modelsQuery.isLoading ||
+                    models.length === 0
+                  }
+                  onChange={(e) =>
+                    updateFilters({
+                      model: e.target.value,
+                      trim: "",
+                    })
+                  }
+                >
+                  <option value="">
+                    {getSelectPlaceholder({
+                      label: "Model",
+                      isLoading: modelsQuery.isLoading,
+                      hasParentValue: Boolean(filters.year && filters.make),
+                      hasOptions: models.length > 0,
+                      emptyLabel: "No models available",
+                    })}
+                  </option>
+                  {models.map((model) => (
+                    <option key={model} value={model}>
+                      {model}
+                    </option>
+                  ))}
+                </select>
 
-              <select className="form-select"
-                value={filters.model}
-                onChange={(e)=>setFilters({...filters,model:e.target.value})}>
-                <option value="">Model</option>
-              </select>
+                <select
+                  className="form-select"
+                  value={filters.trim}
+                  disabled={
+                    !filters.year ||
+                    !filters.make ||
+                    !filters.model ||
+                    trimsQuery.isLoading ||
+                    trims.length === 0
+                  }
+                  onChange={(e) => updateFilters({ trim: e.target.value })}
+                >
+                  <option value="">
+                    {getSelectPlaceholder({
+                      label: "Trim",
+                      isLoading: trimsQuery.isLoading,
+                      hasParentValue: Boolean(
+                        filters.year && filters.make && filters.model,
+                      ),
+                      hasOptions: trims.length > 0,
+                      emptyLabel: "No trims available",
+                    })}
+                  </option>
+                  {trims.map((trim) => (
+                    <option key={trim} value={trim}>
+                      {trim}
+                    </option>
+                  ))}
+                </select>
+              </div>
 
-              <select className="form-select"
-                value={filters.trim}
-                onChange={(e)=>setFilters({...filters,trim:e.target.value})}>
-                <option value="">Trim</option>
-              </select>
-            </div>
+              {vehicleNote && (
+                <p className="mt-3 text-sm text-muted-foreground">
+                  {vehicleNote}
+                </p>
+              )}
+            </>
           )}
 
           <button
@@ -177,7 +544,6 @@ const TireSearchSection = () => {
             <Search className="w-5 h-5" />
             Find Your Tires Now
           </button>
-
         </div>
       </div>
     </section>
