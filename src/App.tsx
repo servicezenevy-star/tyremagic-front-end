@@ -20,6 +20,7 @@ import TireInstallationFaq from "./pages/TireInstallationFaq.tsx";
 import ReturnsRefundsFaq from "./pages/ReturnsRefundsFaq.tsx";
 import MobileInstallationFaq from "./pages/MobileInstallationFaq.tsx";
 import HowToBuyTiresFaq from "./pages/HowToBuyTiresFaq.tsx";
+import VehicleTireSize from "./pages/VehicleTireSize.tsx";
 
 const queryClient = new QueryClient();
 
@@ -32,22 +33,40 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/tires" element={<TiresPage />} />
+          <Route path="/selecttiresize" element={<VehicleTireSize />} />
           <Route path="/wheels" element={<WheelsPage />} />
           <Route path="/deals" element={<DealsPage />} />
           <Route path="/shipping" element={<ShippingPage />} />
-          <Route path="/partner" element={<InstallerSignupPage/>} />
+          <Route path="/partner" element={<InstallerSignupPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/cart" element={<CartPage />} />
           <Route path="*" element={<NotFound />} />
           <Route path="/faq" element={<FaqPage />} />
-          <Route path="/faq-shipping-delivery" element={<ShippingDeliveryFaq />} />
-          <Route path="/faq-tread-wear-warranty" element={<TreadWearWarrantyFaq />} />
-          <Route path="/faq-online-tire-orders" element={<OnlineTireOrdersFaq />} />
-          <Route path="/faq-tire-installation" element={<TireInstallationFaq />} />
+          <Route
+            path="/faq-shipping-delivery"
+            element={<ShippingDeliveryFaq />}
+          />
+          <Route
+            path="/faq-tread-wear-warranty"
+            element={<TreadWearWarrantyFaq />}
+          />
+          <Route
+            path="/faq-online-tire-orders"
+            element={<OnlineTireOrdersFaq />}
+          />
+          <Route
+            path="/faq-tire-installation"
+            element={<TireInstallationFaq />}
+          />
           <Route path="/faq-returns-refunds" element={<ReturnsRefundsFaq />} />
-          <Route path="/faq-mobile-installation-atlanta" element={<MobileInstallationFaq />} />
-          <Route path="/faq-how-to-buy-tires-online" element={<HowToBuyTiresFaq />} />
-         
+          <Route
+            path="/faq-mobile-installation-atlanta"
+            element={<MobileInstallationFaq />}
+          />
+          <Route
+            path="/faq-how-to-buy-tires-online"
+            element={<HowToBuyTiresFaq />}
+          />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>

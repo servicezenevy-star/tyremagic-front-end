@@ -2,25 +2,177 @@ import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import { Star, Filter, ChevronDown, ShoppingCart } from "lucide-react";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useLocation } from "react-router-dom";
+import { fitMent } from "@/config/axiosUtils";
 import tireIcon from "@/assets/tire-icon.png";
 
-const tireBrands = ["Bridgestone", "Michelin", "Goodyear", "Continental", "Pirelli", "Falken", "Hankook", "Cooper", "Toyo", "Dunlop"];
-const tireTypes = ["All Season", "Summer", "Winter", "All Terrain", "Performance", "Touring"];
+const tireBrands = [
+  "Bridgestone",
+  "Michelin",
+  "Goodyear",
+  "Continental",
+  "Pirelli",
+  "Falken",
+  "Hankook",
+  "Cooper",
+  "Toyo",
+  "Dunlop",
+];
+const tireTypes = [
+  "All Season",
+  "Summer",
+  "Winter",
+  "All Terrain",
+  "Performance",
+  "Touring",
+];
 
 const mockTires = [
-  { id: 1, name: "Dueler LX", brand: "Bridgestone", price: 189.99, originalPrice: 219.99, rating: 4.8, reviews: 342, type: "All Season", size: "225/65R17", badge: "Best Seller" },
-  { id: 2, name: "Defender T+H", brand: "Michelin", price: 164.99, originalPrice: null, rating: 4.9, reviews: 1205, type: "All Season", size: "215/55R17", badge: "Top Rated" },
-  { id: 3, name: "Assurance MaxLife", brand: "Goodyear", price: 142.99, originalPrice: 169.99, rating: 4.6, reviews: 876, type: "All Season", size: "225/60R16", badge: "Sale" },
-  { id: 4, name: "ExtremeContact DWS 06", brand: "Continental", price: 199.99, originalPrice: null, rating: 4.7, reviews: 654, type: "Performance", size: "245/45R18", badge: null },
-  { id: 5, name: "P7 AS Plus 3", brand: "Pirelli", price: 178.99, originalPrice: 209.99, rating: 4.5, reviews: 432, type: "All Season", size: "235/55R17", badge: "Sale" },
-  { id: 6, name: "WildPeak A/T4W", brand: "Falken", price: 156.99, originalPrice: null, rating: 4.8, reviews: 989, type: "All Terrain", size: "265/70R17", badge: "Best Seller" },
-  { id: 7, name: "Ventus V2 Concept2", brand: "Hankook", price: 109.99, originalPrice: 129.99, rating: 4.4, reviews: 567, type: "Performance", size: "225/45R17", badge: "Sale" },
-  { id: 8, name: "Discoverer AT3 4S", brand: "Cooper", price: 148.99, originalPrice: null, rating: 4.7, reviews: 723, type: "All Terrain", size: "245/75R16", badge: "Top Rated" },
-  { id: 9, name: "Open Country A/T III", brand: "Toyo", price: 172.99, originalPrice: 199.99, rating: 4.6, reviews: 445, type: "All Terrain", size: "275/65R18", badge: "Sale" },
-  { id: 10, name: "Sport Maxx RT2", brand: "Dunlop", price: 215.99, originalPrice: null, rating: 4.5, reviews: 289, type: "Summer", size: "255/35R19", badge: null },
-  { id: 11, name: "CrossClimate2", brand: "Michelin", price: 185.99, originalPrice: null, rating: 4.9, reviews: 1567, type: "All Season", size: "225/50R17", badge: "Top Rated" },
-  { id: 12, name: "Alenza AS Ultra", brand: "Bridgestone", price: 198.99, originalPrice: 229.99, rating: 4.7, reviews: 312, type: "Touring", size: "235/55R20", badge: "Sale" },
+  {
+    id: 1,
+    name: "Dueler LX",
+    brand: "Bridgestone",
+    price: 189.99,
+    originalPrice: 219.99,
+    rating: 4.8,
+    reviews: 342,
+    type: "All Season",
+    size: "225/65R17",
+    badge: "Best Seller",
+  },
+  {
+    id: 2,
+    name: "Defender T+H",
+    brand: "Michelin",
+    price: 164.99,
+    originalPrice: null,
+    rating: 4.9,
+    reviews: 1205,
+    type: "All Season",
+    size: "215/55R17",
+    badge: "Top Rated",
+  },
+  {
+    id: 3,
+    name: "Assurance MaxLife",
+    brand: "Goodyear",
+    price: 142.99,
+    originalPrice: 169.99,
+    rating: 4.6,
+    reviews: 876,
+    type: "All Season",
+    size: "225/60R16",
+    badge: "Sale",
+  },
+  {
+    id: 4,
+    name: "ExtremeContact DWS 06",
+    brand: "Continental",
+    price: 199.99,
+    originalPrice: null,
+    rating: 4.7,
+    reviews: 654,
+    type: "Performance",
+    size: "245/45R18",
+    badge: null,
+  },
+  {
+    id: 5,
+    name: "P7 AS Plus 3",
+    brand: "Pirelli",
+    price: 178.99,
+    originalPrice: 209.99,
+    rating: 4.5,
+    reviews: 432,
+    type: "All Season",
+    size: "235/55R17",
+    badge: "Sale",
+  },
+  {
+    id: 6,
+    name: "WildPeak A/T4W",
+    brand: "Falken",
+    price: 156.99,
+    originalPrice: null,
+    rating: 4.8,
+    reviews: 989,
+    type: "All Terrain",
+    size: "265/70R17",
+    badge: "Best Seller",
+  },
+  {
+    id: 7,
+    name: "Ventus V2 Concept2",
+    brand: "Hankook",
+    price: 109.99,
+    originalPrice: 129.99,
+    rating: 4.4,
+    reviews: 567,
+    type: "Performance",
+    size: "225/45R17",
+    badge: "Sale",
+  },
+  {
+    id: 8,
+    name: "Discoverer AT3 4S",
+    brand: "Cooper",
+    price: 148.99,
+    originalPrice: null,
+    rating: 4.7,
+    reviews: 723,
+    type: "All Terrain",
+    size: "245/75R16",
+    badge: "Top Rated",
+  },
+  {
+    id: 9,
+    name: "Open Country A/T III",
+    brand: "Toyo",
+    price: 172.99,
+    originalPrice: 199.99,
+    rating: 4.6,
+    reviews: 445,
+    type: "All Terrain",
+    size: "275/65R18",
+    badge: "Sale",
+  },
+  {
+    id: 10,
+    name: "Sport Maxx RT2",
+    brand: "Dunlop",
+    price: 215.99,
+    originalPrice: null,
+    rating: 4.5,
+    reviews: 289,
+    type: "Summer",
+    size: "255/35R19",
+    badge: null,
+  },
+  {
+    id: 11,
+    name: "CrossClimate2",
+    brand: "Michelin",
+    price: 185.99,
+    originalPrice: null,
+    rating: 4.9,
+    reviews: 1567,
+    type: "All Season",
+    size: "225/50R17",
+    badge: "Top Rated",
+  },
+  {
+    id: 12,
+    name: "Alenza AS Ultra",
+    brand: "Bridgestone",
+    price: 198.99,
+    originalPrice: 229.99,
+    rating: 4.7,
+    reviews: 312,
+    type: "Touring",
+    size: "235/55R20",
+    badge: "Sale",
+  },
 ];
 
 const TiresPage = () => {
@@ -28,27 +180,194 @@ const TiresPage = () => {
   const [selectedType, setSelectedType] = useState<string | null>(null);
   const [sortBy, setSortBy] = useState("popular");
   const [filtersOpen, setFiltersOpen] = useState(false);
+  const { search } = useLocation();
 
-  const filteredTires = mockTires.filter((tire) => {
-    if (selectedBrands.length > 0 && !selectedBrands.includes(tire.brand)) return false;
+  // products fetched from API
+  type ProductUI = {
+    id: string;
+    name: string;
+    brand: string;
+    price: number | null;
+    originalPrice: number | null;
+    rating: number;
+    reviews: number;
+    type: string;
+    size: string;
+    badge: string | null;
+    images: Record<string, unknown> | null;
+    raw?: Record<string, unknown>;
+  };
+
+  const [products, setProducts] = useState<ProductUI[] | null>(null);
+  const [productsLoading, setProductsLoading] = useState(false);
+  const [productsError, setProductsError] = useState<string | null>(null);
+
+  const dataSource = products ?? [];
+
+  const filteredTires = dataSource.filter((tire) => {
+    if (selectedBrands.length > 0 && !selectedBrands.includes(tire.brand))
+      return false;
     if (selectedType && tire.type !== selectedType) return false;
     return true;
   });
 
   const sortedTires = [...filteredTires].sort((a, b) => {
     switch (sortBy) {
-      case "price-low": return a.price - b.price;
-      case "price-high": return b.price - a.price;
-      case "rating": return b.rating - a.rating;
-      default: return b.reviews - a.reviews;
+      case "price-low":
+        return a.price - b.price;
+      case "price-high":
+        return b.price - a.price;
+      case "rating":
+        return b.rating - a.rating;
+      default:
+        return b.reviews - a.reviews;
     }
   });
 
   const toggleBrand = (brand: string) => {
     setSelectedBrands((prev) =>
-      prev.includes(brand) ? prev.filter((b) => b !== brand) : [...prev, brand]
+      prev.includes(brand) ? prev.filter((b) => b !== brand) : [...prev, brand],
     );
   };
+
+  const parseQuery = (searchStr: string) => {
+    const params = new URLSearchParams(searchStr);
+    return {
+      year: params.get("year") ?? "",
+      make: params.get("make") ?? "",
+      model: params.get("model") ?? "",
+      trim: params.get("trim") ?? "",
+      trimoption: params.get("trimoption") ?? "",
+    };
+  };
+
+  const query = useMemo(() => parseQuery(search), [search]);
+
+  useEffect(() => {
+    const isComplete =
+      query.year && query.make && query.model && query.trim && query.trimoption;
+    if (!isComplete) {
+      // don't call API if vehicle info is incomplete; leave mock data
+      return;
+    }
+
+    let active = true;
+    const load = async () => {
+      setProductsLoading(true);
+      setProductsError(null);
+      try {
+        const payload = {
+          vehicle: {
+            year: query.year,
+            make: query.make,
+            model: query.model,
+            trim: query.trim,
+            trimoption: query.trimoption,
+          },
+          options: { images: { small: 1, large: 1 } },
+        };
+
+        const res = await fitMent.getProductByFitment(payload);
+
+        if (!active) return;
+
+        const fitments = (res?.fitments ?? []) as unknown[];
+        console.log("fitments returned:", fitments.length, fitments);
+        const extracted: Record<string, unknown>[] = [];
+        for (const f of fitments) {
+          const fit = f as Record<string, unknown>;
+          const vehicleid = (fit["vehicleid"] as string) ?? "";
+          const fitmentResults = (fit["fitmentresults"] as unknown[]) ?? [];
+
+          for (const fr of fitmentResults) {
+            const frObj = fr as Record<string, unknown>;
+            const pos = (frObj["position"] as Record<string, unknown>) ?? {};
+            console.log(
+              "Positions for fitment result",
+              frObj["fitmentresultid"],
+              pos,
+            );
+            for (const p of ["both", "front", "rear"]) {
+              const productsList = pos[p] as unknown as unknown[] | undefined;
+              console.log("Products for position", p, productsList);
+              if (!productsList) continue;
+              for (const prod of productsList.products as unknown[]) {
+                const prodObj = prod as Record<string, unknown>;
+                extracted.push({
+                  ...prodObj,
+                  _position: p,
+                  _vehicleid: vehicleid,
+                });
+              }
+            }
+          }
+        }
+
+        console.log("extracted products count:", extracted.length);
+        // map to UI-friendly shape
+        const mapped: ProductUI[] = extracted.map((p, idx) => {
+          const atd =
+            (p["atdproductnumber"] as string) ??
+            (p["mfgproductnumber"] as string) ??
+            `${idx}`;
+          const style =
+            (p["style"] as string) ?? (p["description"] as string) ?? "";
+          const brand = (p["brand"] as string) ?? "";
+          const productgroup = (p["productgroup"] as string) ?? "";
+          const description = (p["description"] as string) ?? "";
+          const badgeVal = (p["valuebuysproduct"] as boolean)
+            ? "Value Buy"
+            : (p["preferredbrand"] as boolean)
+              ? "Preferred"
+              : null;
+          const images = (p["images"] as Record<string, unknown>) ?? null;
+
+          const sizeMatch = description.match(/(\d+\/\d+R\d+)/);
+          const smallImage = images?.small.images?.[0] as string | undefined;
+
+          return {
+            id: atd,
+            name: style,
+            brand,
+            price: null,
+            originalPrice: null,
+            rating: 0,
+            reviews: 0,
+            type: productgroup,
+            size: sizeMatch?.[1] ?? query.trimoption ?? "",
+            badge: badgeVal,
+            images: smallImage,
+            raw: p,
+          };
+        });
+
+        console.log(
+          "mapped products count:",
+          mapped.length,
+          mapped.slice(0, 5),
+        );
+        setProducts(mapped);
+      } catch (err: unknown) {
+        const message =
+          err instanceof Error
+            ? err.message
+            : String(err ?? "Failed to load products.");
+        console.error("Error mapping products:", err);
+        setProductsError(message);
+        setProducts([]);
+      } finally {
+        if (active) setProductsLoading(false);
+      }
+    };
+
+    load();
+
+    return () => {
+      active = false;
+    };
+  }, [query.year, query.make, query.model, query.trim, query.trimoption]);
+
+  console.log("Products to display", products);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -60,7 +379,10 @@ const TiresPage = () => {
             <h1 className="font-heading text-3xl md:text-5xl font-black uppercase text-primary-foreground">
               Shop <span className="text-primary">Tires</span>
             </h1>
-            <p className="text-primary-foreground/60 mt-2">Find the perfect tires for your vehicle. Free shipping on all orders.</p>
+            <p className="text-primary-foreground/60 mt-2">
+              Find the perfect tires for your vehicle. Free shipping on all
+              orders.
+            </p>
           </div>
         </div>
 
@@ -82,7 +404,10 @@ const TiresPage = () => {
               </button>
               {selectedBrands.length > 0 || selectedType ? (
                 <button
-                  onClick={() => { setSelectedBrands([]); setSelectedType(null); }}
+                  onClick={() => {
+                    setSelectedBrands([]);
+                    setSelectedType(null);
+                  }}
                   className="text-sm text-primary font-medium hover:underline"
                 >
                   Clear all
@@ -90,7 +415,9 @@ const TiresPage = () => {
               ) : null}
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-sm text-muted-foreground">{sortedTires.length} results</span>
+              <span className="text-sm text-muted-foreground">
+                {sortedTires.length} results
+              </span>
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
@@ -106,7 +433,9 @@ const TiresPage = () => {
 
           <div className="flex gap-8">
             {/* Sidebar filters */}
-            <aside className={`${filtersOpen ? 'block' : 'hidden'} lg:block w-full lg:w-64 flex-shrink-0`}>
+            <aside
+              className={`${filtersOpen ? "block" : "hidden"} lg:block w-full lg:w-64 flex-shrink-0`}
+            >
               <div className="space-y-6">
                 <div>
                   <h3 className="font-heading text-sm font-bold uppercase text-foreground mb-3 flex items-center justify-between">
@@ -115,15 +444,22 @@ const TiresPage = () => {
                   </h3>
                   <div className="space-y-2">
                     {tireTypes.map((type) => (
-                      <label key={type} className="flex items-center gap-2 cursor-pointer group">
+                      <label
+                        key={type}
+                        className="flex items-center gap-2 cursor-pointer group"
+                      >
                         <input
                           type="radio"
                           name="tireType"
                           checked={selectedType === type}
-                          onChange={() => setSelectedType(selectedType === type ? null : type)}
+                          onChange={() =>
+                            setSelectedType(selectedType === type ? null : type)
+                          }
                           className="w-4 h-4 text-primary accent-primary"
                         />
-                        <span className="text-sm text-foreground group-hover:text-primary transition-colors">{type}</span>
+                        <span className="text-sm text-foreground group-hover:text-primary transition-colors">
+                          {type}
+                        </span>
                       </label>
                     ))}
                   </div>
@@ -136,14 +472,19 @@ const TiresPage = () => {
                   </h3>
                   <div className="space-y-2">
                     {tireBrands.map((brand) => (
-                      <label key={brand} className="flex items-center gap-2 cursor-pointer group">
+                      <label
+                        key={brand}
+                        className="flex items-center gap-2 cursor-pointer group"
+                      >
                         <input
                           type="checkbox"
                           checked={selectedBrands.includes(brand)}
                           onChange={() => toggleBrand(brand)}
                           className="w-4 h-4 accent-primary rounded"
                         />
-                        <span className="text-sm text-foreground group-hover:text-primary transition-colors">{brand}</span>
+                        <span className="text-sm text-foreground group-hover:text-primary transition-colors">
+                          {brand}
+                        </span>
                       </label>
                     ))}
                   </div>
@@ -153,62 +494,95 @@ const TiresPage = () => {
 
             {/* Product grid */}
             <div className="flex-1">
-              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
-                {sortedTires.map((tire, i) => (
-                  <motion.div
-                    key={tire.id}
-                    initial={{ opacity: 0, y: 15 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: i * 0.05 }}
-                    className="product-card group"
-                  >
-                    <div className="relative p-6 pb-2 bg-secondary/30 flex items-center justify-center">
-                      <img
-                        src={tireIcon}
-                        alt={`Buy tires online - ${tire.brand} ${tire.name} (${tire.type})`}
-                        className="w-32 h-32 object-contain group-hover:scale-110 transition-transform duration-300"
-                      />
-                      {tire.badge && (
-                        <span className={`absolute top-3 left-3 ${tire.badge === "Sale" ? "badge-sale" : tire.badge === "Top Rated" ? "badge-new" : "badge-sale"}`}>
-                          {tire.badge}
+              {productsLoading ? (
+                <div className="w-full py-20 text-center">
+                  <p className="text-muted-foreground">Loading tires...</p>
+                </div>
+              ) : sortedTires.length > 0 ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
+                  {sortedTires.map((tire, i) => (
+                    <motion.div
+                      key={tire.id}
+                      initial={{ opacity: 0, y: 15 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: i * 0.05 }}
+                      className="product-card group"
+                    >
+                      <div className="relative p-6 pb-2 bg-secondary/30 flex items-center justify-center">
+                        <img
+                          src={
+                            (tire.images.url as string | undefined) ?? tireIcon
+                          }
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).src = tireIcon;
+                          }}
+                          alt={`Buy tires online - ${tire.brand} ${tire.name} (${tire.type})`}
+                          className="w-32 h-32 object-contain group-hover:scale-110 transition-transform duration-300"
+                        />
+                        {tire.badge && (
+                          <span
+                            className={`absolute top-3 left-3 ${tire.badge === "Sale" ? "badge-sale" : tire.badge === "Top Rated" ? "badge-new" : "badge-sale"}`}
+                          >
+                            {tire.badge}
+                          </span>
+                        )}
+                      </div>
+                      <div className="p-4">
+                        <span className="text-xs font-semibold text-primary uppercase">
+                          {tire.brand}
                         </span>
-                      )}
-                    </div>
-                    <div className="p-4">
-                      <span className="text-xs font-semibold text-primary uppercase">{tire.brand}</span>
-                      <h3 className="font-heading text-lg font-bold text-foreground mt-0.5">{tire.name}</h3>
-                      <p className="text-xs text-muted-foreground mt-1">{tire.type} • {tire.size}</p>
-                      <div className="flex items-center gap-1.5 mt-2">
-                        <div className="flex gap-0.5">
-                          {Array.from({ length: 5 }).map((_, j) => (
-                            <Star key={j} className={`w-3 h-3 ${j < Math.floor(tire.rating) ? "star-color fill-current" : "text-border"}`} />
-                          ))}
+                        <h3 className="font-heading text-lg font-bold text-foreground mt-0.5">
+                          {tire.name}
+                        </h3>
+                        <p className="text-xs text-muted-foreground mt-1">
+                          {tire.type} • {tire.size}
+                        </p>
+                        <div className="flex items-center gap-1.5 mt-2">
+                          <div className="flex gap-0.5">
+                            {Array.from({ length: 5 }).map((_, j) => (
+                              <Star
+                                key={j}
+                                className={`w-3 h-3 ${j < Math.floor(tire.rating) ? "star-color fill-current" : "text-border"}`}
+                              />
+                            ))}
+                          </div>
+                          <span className="text-xs text-muted-foreground">
+                            ({tire.reviews})
+                          </span>
                         </div>
-                        <span className="text-xs text-muted-foreground">({tire.reviews})</span>
-                      </div>
-                      <div className="flex items-center justify-between mt-3">
-                        <div className="flex items-baseline gap-2">
-                          <span className="text-xl font-bold text-foreground">${tire.price}</span>
-                          {tire.originalPrice && (
-                            <span className="text-sm text-muted-foreground line-through">${tire.originalPrice}</span>
-                          )}
+                        <div className="flex items-center justify-between mt-3">
+                          <div className="flex items-baseline gap-2">
+                            <span className="text-xl font-bold text-foreground">
+                              ${tire.price}
+                            </span>
+                            {tire.originalPrice && (
+                              <span className="text-sm text-muted-foreground line-through">
+                                ${tire.originalPrice}
+                              </span>
+                            )}
+                          </div>
+                          <span className="text-xs text-muted-foreground">
+                            each
+                          </span>
                         </div>
-                        <span className="text-xs text-muted-foreground">each</span>
+                        <button className="btn-hero-primary w-full mt-3 py-2.5 text-xs gap-2">
+                          <ShoppingCart className="w-3.5 h-3.5" />
+                          Add to Cart
+                        </button>
                       </div>
-                      <button className="btn-hero-primary w-full mt-3 py-2.5 text-xs gap-2">
-                        <ShoppingCart className="w-3.5 h-3.5" />
-                        Add to Cart
-                      </button>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-
-              {sortedTires.length === 0 && (
+                    </motion.div>
+                  ))}
+                </div>
+              ) : (
                 <div className="text-center py-20">
-                  <p className="text-muted-foreground text-lg">No tires match your filters.</p>
+                  <p className="text-muted-foreground text-lg">
+                    No tires found for your vehicle.
+                  </p>
                   <button
-                    onClick={() => { setSelectedBrands([]); setSelectedType(null); }}
+                    onClick={() => {
+                      setSelectedBrands([]);
+                      setSelectedType(null);
+                    }}
                     className="text-primary font-semibold mt-2 hover:underline"
                   >
                     Clear all filters

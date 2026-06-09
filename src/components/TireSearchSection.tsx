@@ -292,7 +292,7 @@ const TireSearchSection = () => {
       trim: filters.trim,
     });
 
-    navigate(`/tires?${vehicleParams.toString()}`);
+    navigate(`/selecttiresize?${vehicleParams.toString()}`);
   };
 
   const tabs = [

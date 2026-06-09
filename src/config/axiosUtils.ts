@@ -44,4 +44,26 @@ export const fitMent = {
     });
     return response.data;
   },
+  getTrimOptions: async (year: string, make: string, model: string, trim) => {
+    const response = await api.request({
+      method: "POST",
+      url: "/fitment/trim-option",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: { year, make, model, trim },
+    });
+    return response.data;
+  },
+  getProductByFitment: async (data: any) => {
+    const response = await api.request({
+      url: "/fitment/product-by-fitment",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data,
+    });
+    return response.data;
+  },
 };
